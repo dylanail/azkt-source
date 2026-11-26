@@ -1,0 +1,707 @@
+<title>AZKT In Japan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,900&family=Roboto+Mono:wght@400;500;700&display=swap">
+<style>
+/* Layout: AZKT's existing black-header / white-page / square-cornered storefront, extended with a third inventory
+   tier. The one new device is the landed-cost ledger: every price is split by where the money is paid, coloured
+   after the three flags already in the header (Japan, US border, Arizona). Single light look, matching the live site. */
+:root{
+  --asphalt:#151515;      /* header, footer, buttons (live site) */
+  --ink:#161616;          /* body text (live site) */
+  --paper:#fcfcfc;        /* page ground (live site) */
+  --white:#ffffff;
+  --line:#e2e3e5;
+  --slate:#4b4f58;        /* secondary text (live site grey) */
+  --mist:#69727d;         /* captions (live site grey) */
+  --hinomaru:#bc002d;     /* paid in Japan: the truck */
+  --hinomaru-soft:#e7a3b1;/* paid in Japan: ocean freight */
+  --union:#2b3f73;        /* paid at the US border */
+  --copper:#c8601a;       /* paid in Arizona */
+  --font-body:'Roboto',Arial,Helvetica,sans-serif;
+  --font-display:'Roboto','Arial Black',Arial,sans-serif; /* 900 italic, as in the wordmark */
+  --font-data:'Roboto Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.7 var(--font-body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{display:block;max-width:100%}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--hinomaru);outline-offset:3px}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.caps{text-transform:uppercase;letter-spacing:.06em}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- site chrome (mirrors the live site) ---------- */
+.site-head{background:var(--asphalt);color:var(--white);margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 22px);padding-bottom:14px}
+.site-head .logo{width:430px;max-width:78%;height:auto;margin-inline:auto}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 30px;margin-top:16px;font-size:14px;text-transform:uppercase}
+.nav a{display:inline-flex;align-items:center;gap:8px;padding:8px 6px;text-decoration:none;border-bottom:2px solid transparent}
+.nav a:hover{border-bottom-color:rgba(255,255,255,.45)}
+.nav a[aria-current="page"]{border-bottom-color:var(--white);font-weight:700}
+.nav .chev{width:0;height:0;border:4px solid transparent;border-top-color:currentColor;border-bottom:0;margin-top:1px}
+.nav .dot{width:9px;height:9px;border-radius:50%;background:var(--hinomaru);box-shadow:0 0 0 2px var(--white)}
+
+.btn{display:inline-block;background:#000;color:var(--white);border:1px solid #000;padding:13px 18px;font-size:14px;line-height:1.2;text-transform:uppercase;text-decoration:none;cursor:pointer;border-radius:0;text-align:center}
+.btn:hover{background:var(--white);color:#000}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:#000;color:var(--white)}
+.band-dark .btn{border-color:#000}
+
+.site-foot{background:#060606;color:#d5d5d5;padding-block:64px 44px;font-size:13px;text-transform:uppercase}
+.foot-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:32px 24px}
+.site-foot h2{font-size:16px;font-weight:400;letter-spacing:.14em;color:var(--white);margin-bottom:14px}
+.site-foot li{padding:3px 0}
+.site-foot a{text-decoration:none}
+.site-foot a:hover{color:var(--white);text-decoration:underline}
+.site-foot .is-new{color:var(--white)}
+.site-foot .is-new::after{content:"NEW";margin-left:8px;font-size:10px;letter-spacing:.1em;border:1px solid currentColor;padding:1px 5px}
+.foot-news input{width:100%;background:#191919;border:0;padding:12px 14px;color:var(--white);border-radius:0}
+.foot-news button{background:none;border:0;color:var(--white);text-transform:uppercase;padding:14px 0;width:100%;cursor:pointer}
+.copyright{text-align:center;margin-top:44px}
+
+/* ---------- tier tabs: the tie-in to Available / En-Route ---------- */
+.tiers{border-bottom:1px solid var(--line);background:var(--white)}
+.tiers ul{display:flex;justify-content:center;flex-wrap:wrap;gap:0 34px}
+.tiers a{display:flex;align-items:baseline;gap:8px;padding:18px 4px 15px;font-size:14px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;color:var(--slate);border-bottom:3px solid transparent}
+.tiers a:hover{color:var(--ink)}
+.tiers a[aria-current="page"]{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
+.tiers .count{font-family:var(--font-data);font-size:12px;color:var(--mist);font-weight:400}
+
+/* ---------- intro ---------- */
+.intro{padding-block:56px 48px}
+.intro-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px 64px;align-items:start}
+.display{font:italic 900 clamp(3rem,8.2vw,6.25rem)/.88 var(--font-display);text-transform:uppercase;letter-spacing:-.015em;margin-left:-.04em}
+.display .outline{display:block;color:transparent;-webkit-text-stroke:2px var(--ink);padding-right:.08em}
+@supports not (-webkit-text-stroke:2px #000){.display .outline{color:var(--ink)}}
+.lead{font-size:17px;line-height:1.65;max-width:34em;margin-top:26px}
+.asis{border:1px solid #000;padding:22px 26px;margin-top:30px;max-width:36em}
+.asis h2{font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.asis p{margin-top:6px;color:var(--slate)}
+.asis .btn{margin-top:16px}
+
+/* ---------- the landed-cost ledger (signature) ---------- */
+.ledger{background:var(--white);border:1px solid #000;padding:22px 24px 20px;font-size:14px;line-height:1.5}
+.ledger-title{font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-wrap:balance}
+.ledger-sub{font-family:var(--font-data);font-size:12px;color:var(--mist);margin-top:2px}
+.lg{margin-top:16px}
+.lg-h{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.sw{flex:none;width:10px;height:10px;display:inline-block}
+.sw.jp{background:var(--hinomaru)}.sw.fr{background:var(--hinomaru-soft)}.sw.us{background:var(--union)}.sw.az{background:var(--copper)}
+.ledger .row{display:flex;align-items:baseline;gap:8px;padding:3px 0 3px 18px}
+.ledger .row span{min-width:0}
+.ledger .row i{flex:1;min-width:14px;border-bottom:1px dotted #a5abb3;transform:translateY(-4px)}
+.ledger .row b{font-weight:500;font-variant-numeric:tabular-nums}
+.ledger .total{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:2px solid #000;margin-top:16px;padding-top:12px}
+.ledger .total span{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.ledger .total b{font-size:30px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums}
+.ledger .bar{margin-top:14px;height:10px}
+.ledger-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mist)}
+.ledger-foot a{color:var(--ink);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+
+.bar{display:flex;height:6px;gap:2px}
+.bar span{display:block;height:100%;min-width:2px;transform-origin:left center}
+.bar .jp{background:var(--hinomaru)}.bar .fr{background:var(--hinomaru-soft)}.bar .us{background:var(--union)}.bar .az{background:var(--copper)}
+@media (prefers-reduced-motion:no-preference){
+  .ledger.is-live .bar span{animation:grow .55s cubic-bezier(.2,.7,.2,1) both}
+  .ledger.is-live .bar span:nth-child(2){animation-delay:.28s}
+  .ledger.is-live .bar span:nth-child(3){animation-delay:.56s}
+  .ledger.is-live .bar span:nth-child(4){animation-delay:.84s}
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+
+/* ---------- notice + controls ---------- */
+.notice{text-align:center;text-transform:uppercase;letter-spacing:.03em;font-size:15px;padding-block:0 40px;text-wrap:balance}
+.browse{padding-block:0 72px}
+.controls{border-top:1px solid #000;border-bottom:1px solid var(--line);padding:18px 0;display:flex;flex-wrap:wrap;gap:14px 18px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.field select{appearance:none;-webkit-appearance:none;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23161616'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid #000;border-radius:0;padding:9px 32px 9px 12px;font-size:14px;font-weight:400;letter-spacing:0;text-transform:none;min-width:132px;cursor:pointer}
+.checks{display:flex;gap:16px;align-items:center;min-height:40px}
+.check{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;text-transform:uppercase}
+.check input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1px solid #000;background:var(--white);margin:0;display:grid;place-content:center;cursor:pointer;border-radius:0}
+.check input:checked{background:#000}
+.check input:checked::after{content:"";width:9px;height:5px;border:2px solid var(--white);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.mode{margin-left:auto}
+.seg{display:flex;border:1px solid #000}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+.seg span{display:block;padding:9px 14px;font-size:13px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.seg input:checked + span{background:#000;color:var(--white)}
+.seg input:focus-visible + span{outline:2px solid var(--hinomaru);outline-offset:3px}
+.result-line{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 24px;padding:16px 0 26px;font-size:13px}
+.result-line strong{font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--slate)}
+.legend li{display:flex;align-items:center;gap:7px}
+
+/* ---------- cards (same anatomy as the live inventory cards) ---------- */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 20px}
+.card a{display:block;text-decoration:none;text-align:center}
+.ph{position:relative;aspect-ratio:4/3;background:#e9eaec;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover}
+.tag{position:absolute;top:0;left:0;background:var(--white);color:var(--ink);font-size:12.5px;line-height:1;letter-spacing:.04em;text-transform:uppercase;padding:14px 22px;display:flex;align-items:center;gap:8px}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--hinomaru)}
+.card .spec{font-size:13.5px;text-transform:uppercase;margin-top:16px;line-height:1.5}
+.card .name{font-size:16px;font-weight:700;text-transform:uppercase;line-height:1.3;text-wrap:balance}
+.card a:hover .name{text-decoration:underline;text-underline-offset:3px}
+.card .price{display:flex;justify-content:center;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:10px}
+.card .price b{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.card .price span{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.card .bar{margin-top:12px}
+.card .split{font-family:var(--font-data);font-size:12px;color:var(--slate);margin-top:8px;text-transform:uppercase}
+.empty{grid-column:1/-1;border:1px solid #000;padding:36px 28px;text-align:center}
+.empty h3{font-size:16px;text-transform:uppercase;letter-spacing:.06em}
+.empty p{margin-top:6px;color:var(--slate)}
+.empty .btn{margin:16px 6px 0}
+.pager{display:flex;justify-content:center;gap:6px;margin-top:56px;font-family:var(--font-data);font-size:13px}
+.pager a,.pager span{min-width:38px;padding:8px 10px;border:1px solid var(--line);text-align:center;text-decoration:none}
+.pager a:hover{border-color:#000}
+.pager [aria-current]{background:#000;color:var(--white);border-color:#000}
+.pager .gap{border-color:transparent}
+
+/* ---------- three ways to buy ---------- */
+.section-h{font-size:16px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;text-align:center}
+.section-p{text-align:center;max-width:44em;margin:10px auto 0;color:var(--slate);text-wrap:balance}
+.ways{padding-block:72px;background:var(--white);border-top:1px solid var(--line)}
+.table-scroll{overflow-x:auto;margin-top:34px}
+.ways table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px;line-height:1.5}
+.ways th,.ways td{padding:14px 18px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.ways thead th{font-size:14px;letter-spacing:.07em;text-transform:uppercase;border-bottom:2px solid #000;white-space:nowrap}
+.ways tbody th{font-weight:400;color:var(--slate);width:22%}
+.ways .here{background:#f5f5f5}
+.ways thead .here{background:#000;color:var(--white)}
+.ways .no{color:var(--hinomaru);font-weight:700}
+.ways tfoot td{border-bottom:0;padding-top:20px}
+
+/* ---------- after you reserve (dark gradient band, as on the live homepage) ---------- */
+.band-dark{background:linear-gradient(180deg,#5d5d5d 0%,#1a1a1a 100%);color:var(--white);padding-block:76px}
+.band-dark .section-h{text-align:left}
+.band-dark .section-p{text-align:left;margin-left:0;color:#e3e3e3}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 40px;margin-top:38px;counter-reset:s}
+.steps li{counter-increment:s;border-top:1px solid rgba(255,255,255,.4);padding-top:14px}
+.steps li::before{content:counter(s);font:italic 900 34px/1 var(--font-display);display:block;margin-bottom:8px}
+.steps h3{font-size:15px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.steps p{color:#e3e3e3;margin-top:4px;font-size:14px;line-height:1.6}
+
+/* ---------- questions ---------- */
+.faq{padding-block:72px}
+.faq-list{max-width:820px;margin:30px auto 0;border-top:1px solid #000}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;padding:17px 2px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:14.5px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--font-data);font-weight:400;font-size:18px;line-height:1.2}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{padding:0 2px 20px;max-width:66ch;color:var(--slate)}
+
+/* ---------- truck page (mirrors the live product page) ---------- */
+.crumbs{padding-block:26px 0;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mist)}
+.crumbs a{color:var(--ink)}
+.truck{padding-block:28px 72px}
+.truck-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:40px 52px;align-items:start}
+.gallery .ph{aspect-ratio:4/3}
+.thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+.thumbs button{padding:0;border:0;background:none;cursor:pointer;opacity:.62;aspect-ratio:1/1;overflow:hidden}
+.thumbs button img{width:100%;height:100%;object-fit:cover}
+.thumbs button[aria-pressed="true"],.thumbs button:hover{opacity:1}
+.thumbs button[aria-pressed="true"]{outline:2px solid #000;outline-offset:-2px}
+.truck h1{font-size:clamp(22px,2.6vw,29px);font-weight:400;text-transform:uppercase;line-height:1.2;text-wrap:balance}
+.truck .landed{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:10px}
+.truck .landed b{font-size:34px;line-height:1.1;font-weight:700;font-variant-numeric:tabular-nums}
+.truck .landed span{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.truck .specline{text-transform:uppercase;font-size:14px;margin-top:8px}
+.truck .source{font-family:var(--font-data);font-size:12px;color:var(--mist);text-transform:uppercase;margin-top:4px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.truck .ledger{margin-top:22px}
+.box{border:1px solid #000;padding:24px 28px;margin-top:22px;font-size:14px}
+.box h2{font-size:14px;font-weight:400;text-transform:uppercase}
+.box h2.strong{font-weight:700;letter-spacing:.04em}
+.box p{color:var(--slate)}
+.box .gap{margin-top:16px}
+.box .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.detail-grid{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0 40px;margin-top:56px}
+.detail-tab{align-self:start;font-weight:700;font-size:14px;padding:0 12px 14px;border-bottom:3px solid #000}
+.detail-body{border-left:1px solid var(--line);padding-left:40px;font-size:14.5px}
+.detail-body > * + *{margin-top:18px}
+.detail-body h2{font-size:14px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.unverified{display:inline-block;font-family:var(--font-data);font-size:11.5px;text-transform:uppercase;border:1px solid var(--hinomaru);color:var(--hinomaru);padding:2px 8px;margin-left:8px;vertical-align:1px;letter-spacing:.02em}
+.quote{border-left:3px solid #000;padding:2px 0 2px 16px;max-width:60ch}
+.specs{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 24px;max-width:520px}
+.specs dt{color:var(--mist)}
+.ask{margin-top:56px;border-top:1px solid #000;padding-top:34px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px 52px}
+.ask h2{font-size:16px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.ask p{color:var(--slate);margin-top:8px;max-width:38ch}
+.ask .contact{font-family:var(--font-data);font-size:13px;margin-top:14px;color:var(--ink);user-select:all}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.form .full{grid-column:1/-1}
+.form label{display:flex;flex-direction:column;gap:5px;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.form input[type=text],.form input[type=email],.form input[type=tel],.form textarea{border:1px solid #000;border-radius:0;background:var(--white);padding:10px 12px;font-size:15px;font-weight:400;letter-spacing:0;text-transform:none;width:100%}
+.form textarea{min-height:104px;resize:vertical}
+.form .intent{display:flex;flex-wrap:wrap;gap:8px 22px}
+.radio{flex-direction:row !important;align-items:center;gap:8px !important;font-size:14px !important;font-weight:400 !important;letter-spacing:0 !important;cursor:pointer}
+.radio input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1px solid #000;border-radius:50%;margin:0;display:grid;place-content:center;background:var(--white)}
+.radio input:checked::after{content:"";width:10px;height:10px;border-radius:50%;background:#000}
+.form-note{font-size:13px;color:var(--slate)}
+.sent{border:1px solid #000;padding:18px 20px;font-size:14px}
+.sent strong{display:block;text-transform:uppercase;letter-spacing:.06em}
+
+/* ---------- responsive ---------- */
+@media (max-width:960px){
+  .intro-grid,.truck-grid,.ask{grid-template-columns:minmax(0,1fr)}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .mode{margin-left:0}
+  .detail-grid{grid-template-columns:minmax(0,1fr)}
+  .detail-tab{justify-self:start;margin-bottom:22px}
+  .detail-body{border-left:0;padding-left:0}
+}
+@media (max-width:600px){
+  body{font-size:15px}
+  .site-head .logo{max-width:68%}
+  .nav{gap:0 14px;font-size:12.5px;margin-top:10px}
+  .nav a{padding:6px 4px}
+  .tiers ul{gap:0 18px}
+  .tiers a{font-size:12.5px;padding:14px 2px 11px}
+  .intro{padding-block:36px 36px}
+  .lead{font-size:16px}
+  .asis,.box,.ledger{padding-left:18px;padding-right:18px}
+  .grid{grid-template-columns:minmax(0,1fr);gap:40px}
+  .field{flex:1 1 44%}
+  .field select{min-width:0;width:100%}
+  .field.mode{flex-basis:100%}
+  .seg label{flex:1;text-align:center}
+  .steps,.form{grid-template-columns:minmax(0,1fr)}
+  .foot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ledger .total b{font-size:26px}
+  .ways,.faq,.band-dark{padding-block:52px}
+}
+</style>
+
+<header class="site-head">
+  <div class="wrap">
+    <a href="#browse" aria-label="Arizona Kei Trucks home"><img class="logo" src="img/azkt-logo.png" width="929" height="244" alt="AZ Kei Trucks. Arizona's premier Japanese mini truck importer."></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#browse" data-inert>Home</a>
+      <a href="#browse" data-inert>Purchasing <span class="chev" aria-hidden="true"></span></a>
+      <a href="#browse" aria-current="page"><span class="dot" aria-hidden="true"></span>In Japan</a>
+      <a href="#browse" data-inert>Contact <span class="chev" aria-hidden="true"></span></a>
+      <a href="#browse" data-inert>Import by Request</a>
+      <a href="#browse" data-inert>Information <span class="chev" aria-hidden="true"></span></a>
+    </nav>
+  </div>
+</header>
+
+<nav class="tiers" aria-label="Inventory">
+  <div class="wrap">
+    <ul>
+      <li><a href="#browse" data-inert>On the lot <span class="count">3</span></a></li>
+      <li><a href="#browse" data-inert>En route <span class="count">2</span></a></li>
+      <li><a href="#browse" aria-current="page">In Japan <span class="count">412</span></a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ================= BROWSE VIEW ================= -->
+<main id="view-browse">
+  <section class="intro">
+    <div class="wrap intro-grid">
+      <div>
+        <h1 class="display">Still in <span class="outline">Japan</span></h1>
+        <p class="lead">These kei trucks are sitting in exporters&rsquo; yards in Japan right now. Every price on this page is the price to land one in Mesa, with ocean freight, duty, customs, trucking and Arizona title paperwork already added.</p>
+        <div class="asis">
+          <h2>Sold as-is</h2>
+          <p>We haven&rsquo;t seen these trucks. The photos, mileage and condition notes come from the exporter, and our rust and drivetrain guarantee doesn&rsquo;t cover them.</p>
+          <a class="btn ghost" href="#browse" data-inert>Want the guarantee? Import by Request</a>
+        </div>
+      </div>
+      <aside id="hero-ledger" aria-label="Example landed cost"></aside>
+    </div>
+  </section>
+
+  <p class="notice wrap">Next ship: reserve by Dec 12 to make the Jan 6 sailing from Yokohama. <strong>3 spots left.</strong></p>
+
+  <section class="browse">
+    <div class="wrap">
+      <form class="controls" id="filters" aria-label="Filter trucks">
+        <label class="field">Make
+          <select id="f-make"><option value="">All makes</option><option>Honda</option><option>Subaru</option><option>Suzuki</option></select>
+        </label>
+        <label class="field">Body
+          <select id="f-type"><option value="">Any body</option><option value="truck">Truck</option><option value="dump">Dump bed</option><option value="van">Van</option></select>
+        </label>
+        <label class="field">Landed price
+          <select id="f-max"><option value="">Any price</option><option value="7500">Under $7,500</option><option value="8500">Under $8,500</option><option value="9500">Under $9,500</option></select>
+        </label>
+        <div class="field"><span aria-hidden="true">Must have</span>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="f-4wd"> 4WD</label>
+            <label class="check"><input type="checkbox" id="f-ac"> A/C</label>
+            <label class="check"><input type="checkbox" id="f-mt"> Manual</label>
+          </div>
+        </div>
+        <label class="field">Sort
+          <select id="f-sort"><option value="price">Lowest landed price</option><option value="miles">Lowest miles</option><option value="year">Newest first</option></select>
+        </label>
+        <div class="field mode"><span id="mode-l">Price shown</span>
+          <div class="seg" role="radiogroup" aria-labelledby="mode-l">
+            <label><input type="radio" name="mode" id="f-mode-landed" value="landed" checked><span>Landed in Mesa</span></label>
+            <label><input type="radio" name="mode" id="f-mode-japan" value="japan"><span>In Japan</span></label>
+          </div>
+        </div>
+      </form>
+
+      <div class="result-line">
+        <strong id="result-count" aria-live="polite"></strong>
+        <ul class="legend" aria-label="What the price bar shows">
+          <li><span class="sw jp"></span>Truck</li>
+          <li><span class="sw fr"></span>Ocean freight</li>
+          <li><span class="sw us"></span>US duty and customs</li>
+          <li><span class="sw az"></span>Arizona: trucking, our fee, title</li>
+        </ul>
+      </div>
+
+      <ul class="grid" id="grid"></ul>
+
+      <nav class="pager" id="pager" aria-label="Pages">
+        <a href="#browse" aria-current="page" data-inert>1</a><a href="#browse" data-inert>2</a><a href="#browse" data-inert>3</a><span class="gap">&hellip;</span><a href="#browse" data-inert>35</a><a href="#browse" data-inert>Next</a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="ways">
+    <div class="wrap">
+      <h2 class="section-h">Three ways to buy from us</h2>
+      <p class="section-p">In Japan is the cheapest way in, and the only one we don&rsquo;t stand behind. Pick the one that matches how much risk you want to carry.</p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th scope="col"><span class="caps" style="font-weight:400;color:var(--mist);letter-spacing:.06em">&nbsp;</span></th><th scope="col" class="here">In Japan</th><th scope="col">Import by Request</th><th scope="col">On the lot</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Who picks the truck</th><td class="here">You, from exporter listings</td><td>We find it to your spec</td><td>It&rsquo;s already here</td></tr>
+            <tr><th scope="row">Seen by us before you pay</th><td class="here"><span class="no">No</span></td><td>Yes, checked in Japan</td><td>Yes, it&rsquo;s in our shop</td></tr>
+            <tr><th scope="row">Guarantee</th><td class="here"><span class="no">None. Sold as-is</span></td><td>No structural rust, no engine or drivetrain issues</td><td>Same guarantee</td></tr>
+            <tr><th scope="row">Service and detail in Mesa</th><td class="here">Not included</td><td>Included</td><td>Done</td></tr>
+            <tr><th scope="row">Arizona title</th><td class="here">Paperwork prepared before it arrives</td><td>Paperwork prepared before it arrives</td><td>Clean Arizona title</td></tr>
+            <tr><th scope="row">Wait</th><td class="here">60&ndash;90 days</td><td>10&ndash;12 weeks</td><td>Drive it home, by appointment</td></tr>
+            <tr><th scope="row">Typical kei truck, all in</th><td class="here num">$6,800&ndash;$10,500</td><td>Quoted per truck</td><td class="num">$8,700&ndash;$9,500</td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td></td><td></td><td><a class="btn ghost" href="#browse" data-inert>Start a request</a></td><td><a class="btn ghost" href="#browse" data-inert>See available trucks</a></td></tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap">
+      <h2 class="section-h">After you reserve</h2>
+      <p class="section-p">Japan to our shop in Mesa takes 60 to 90 days. Most of that is waiting for a ship.</p>
+      <ol class="steps">
+        <li><h3>Reserve it</h3><p>Leave a $1,000 deposit. We check with the exporter that the truck is still for sale, usually within one business day. If it&rsquo;s gone, you get the deposit back.</p></li>
+        <li><h3>Pay the balance</h3><p>Due once the exporter confirms. We buy the truck and book it on the next ship with space.</p></li>
+        <li><h3>It sails</h3><p>Two to eight weeks waiting for a vessel, then three to five weeks at sea to Long Beach.</p></li>
+        <li><h3>Customs</h3><p>We file the ISF and the customs entry and pay the duty. That cost is already in your price.</p></li>
+        <li><h3>Trucked to Mesa</h3><p>It comes to our shop by carrier. Arizona title paperwork is prepared before it gets here.</p></li>
+        <li><h3>Pick it up</h3><p>By appointment at 505 W 8th Ave, Suite 7. The truck is yours as it arrived.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="wrap">
+      <h2 class="section-h">Questions about buying a truck that&rsquo;s still in Japan</h2>
+      <div class="faq-list">
+        <details open><summary>Why is this more than the price on Japanese export sites?</summary><p>Those sites show the price of the truck in Japan, or the price to a US port. Getting it from there to your driveway adds ocean freight, a 25% import duty on trucks, customs filings, port fees and about $700 of trucking from Long Beach. A $3,850 truck is roughly $8,500 by the time it reaches Mesa. We show that number first, and the breakdown on every listing.</p></details>
+        <details><summary>What does as-is mean here?</summary><p>It means the truck is yours in whatever condition it arrives. We have not inspected it, driven it or met the seller. If it shows up with rust or a tired engine, that is the trade for the lower price. If that worries you, use Import by Request, where we choose the truck and guarantee no structural rust and no engine or drivetrain issues.</p></details>
+        <details><summary>How much is the duty?</summary><p>Kei trucks pay 25% of the truck&rsquo;s price in Japan. Kei vans with rear seats are usually entered as passenger vehicles at 2.5%. Each listing shows the duty for that vehicle as its own line.</p></details>
+        <details><summary>Will it come with an Arizona title?</summary><p>We prepare the Arizona title paperwork before the truck arrives, the same way we do for Import by Request, so you can register it once you pick it up.</p></details>
+        <details><summary>Are these trucks legal to drive?</summary><p>Every truck listed here is at least 25 years old, which makes it legal to import. Road use depends on your state. Our Arizona kei truck legal guide covers the rules here.</p></details>
+        <details><summary>What if the truck sells before you reach the exporter?</summary><p>It happens. Listings are checked against the exporter&rsquo;s stock every morning, but trucks sell during the day. Your deposit is refunded in full, or moved to another truck if you&rsquo;d rather.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= TRUCK VIEW ================= -->
+<main id="view-truck" hidden></main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h2>Contact us</h2><ul><li>info@azkeitrucks.com</li><li>(602) 327-1434</li><li>505 W 8th Ave Suite 7 Mesa, AZ</li></ul></div>
+      <div><h2>Inventory</h2><ul><li><a href="#browse" data-inert>All vehicles</a></li><li><a href="#browse" data-inert>Available inventory</a></li><li><a href="#browse" data-inert>En route vehicles</a></li><li><a class="is-new" href="#browse">In Japan vehicles</a></li></ul></div>
+      <div><h2>About</h2><ul><li><a href="#browse" data-inert>Kei truck legality</a></li><li><a href="#browse" data-inert>About us</a></li><li><a href="#browse" data-inert>Contact</a></li><li><a href="#browse" data-inert>Articles</a></li></ul></div>
+      <div><h2>Follow us</h2><ul><li><a href="#browse" data-inert>Facebook</a></li><li><a href="#browse" data-inert>Instagram</a></li><li><a href="#browse" data-inert>YouTube</a></li></ul></div>
+      <form class="foot-news" id="news"><h2>Newsletter</h2><input id="news-email" type="email" placeholder="Email" aria-label="Email"><button type="submit">Subscribe</button></form>
+    </div>
+    <p class="copyright">&copy; 2026 Arizona Kei Trucks</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---- Costs added to every truck. Placeholders: set these to your real numbers. ---- */
+  var COST = {
+    freight: { Yokohama:1450, Nagoya:1450, Kobe:1490, Osaka:1490, Hakata:1620 }, // ocean freight + insurance to Long Beach
+    duty:    { truck:0.25, dump:0.25, van:0.025 },
+    customs: 463,   // ISF, entry, bond, terminal fees
+    trucking:700,   // Long Beach to Mesa
+    service: 950,   // AZKT import fee
+    title:   150    // Arizona title paperwork
+  };
+
+  /* ---- Sample listings. Photos are stand-ins from AZKT's own past listings. ---- */
+  var L = [
+    {id:20418,set:'04',year:1999,make:'Subaru',model:'Sambar Truck',chassis:'TT2',engine:'658CC EN07F',drive:'4WD',trans:'5-speed manual',ac:true,km:55000,yard:'Nagoya',fob:3850,type:'truck',color:'White',checked:'today, 6:10 AM',feat:['Air conditioning','Selectable 4WD','Extra-low gear'],notes:'Runs and drives well. Bed floor has surface rust and scratches. Small dent on left door. Tires about 60%. No timing belt record.'},
+    {id:20377,set:'02',year:1999,make:'Honda',model:'Acty Truck 4WD',chassis:'HA7',engine:'656CC E07Z',drive:'4WD',trans:'5-speed manual',ac:true,km:70000,yard:'Yokohama',fob:4200,type:'truck',color:'White',checked:'today, 6:10 AM',feat:['Air conditioning','Power steering','Fuel injection'],notes:'Engine and transmission good. Light rust on bed hinges. Driver seat worn on outer bolster. Front bumper scuffed.'},
+    {id:20391,set:'01',year:1997,make:'Subaru',model:'Sambar Classic Truck',chassis:'KS4',engine:'658CC EN07C',drive:'4WD',trans:'5-speed manual',ac:true,km:117000,yard:'Kobe',fob:4650,type:'truck',color:'Silver',checked:'today, 6:10 AM',feat:['Air conditioning','Classic chrome grille','Selectable 4WD','Bed mat'],notes:'Classic edition. Repaint on right side. Underside has surface rust. Carburetor idles high when cold.'},
+    {id:20402,set:'03',year:1999,make:'Honda',model:'Acty Truck',chassis:'HA4',engine:'656CC E07A',drive:'4WD',trans:'5-speed manual',ac:true,km:29000,yard:'Nagoya',fob:5400,type:'truck',color:'White',checked:'yesterday',feat:['Air conditioning','Selectable 4WD','Low kilometres'],notes:'Low kilometre one-owner truck. Interior clean. Small stone chips on front panel. Bed very clean.'},
+    {id:20355,set:'05',year:1996,make:'Honda',model:'Acty Street G Van',chassis:'HH3',engine:'656CC E07A',drive:'2WD',trans:'5-speed manual',ac:true,km:84000,yard:'Osaka',fob:2950,type:'van',color:'Silver',checked:'today, 6:10 AM',feat:['Air conditioning','Rear seats','Sliding doors both sides'],notes:'Runs well. Clear coat fading on roof. Rear bumper scratched. Interior has smoke smell.'},
+    {id:20428,set:'06',year:1998,make:'Subaru',model:'Sambar Classic Truck',chassis:'KS4',engine:'658CC EN07C',drive:'4WD',trans:'5-speed manual',ac:true,km:108000,yard:'Hakata',fob:4300,type:'truck',color:'Champagne',checked:'today, 6:10 AM',feat:['Air conditioning','Classic chrome grille','Selectable 4WD'],notes:'Good running condition. Aftermarket wheels. Bed floor scratched from work use. Rust starting at rear arch, left side.'},
+    {id:20340,set:'07',year:2000,make:'Honda',model:'Acty Truck',chassis:'HA7',engine:'656CC E07Z',drive:'4WD',trans:'5-speed manual',ac:false,km:103000,yard:'Yokohama',fob:3300,type:'truck',color:'White',checked:'2 days ago',feat:['Power steering','Fuel injection','Selectable 4WD'],notes:'Farm use truck. No air conditioning. Runs fine. Scratches all around. Clutch engages high.'},
+    {id:20366,set:'08',year:1999,make:'Honda',model:'Acty Truck SDX',chassis:'HA4',engine:'656CC E07A',drive:'2WD',trans:'5-speed manual',ac:true,km:45000,yard:'Kobe',fob:3600,type:'truck',color:'White',checked:'today, 6:10 AM',feat:['Air conditioning','SDX trim','Bed rails'],notes:'Clean truck for the year. Minor rust on gate latches. Dashboard has one crack near the vent.'},
+    {id:20433,set:'09',year:1998,make:'Subaru',model:'Sambar Dump Truck',chassis:'KS4',engine:'658CC EN07F',drive:'4WD',trans:'5-speed manual',ac:true,km:106000,yard:'Nagoya',fob:5200,type:'dump',color:'White',checked:'today, 6:10 AM',feat:['Electric dump bed','Air conditioning','Selectable 4WD'],notes:'Dump bed raises and lowers. Bed has dents and rust from gravel work. Seat torn on driver side.'},
+    {id:20319,set:'10',year:1996,make:'Suzuki',model:'Carry Truck',chassis:'DD51T',engine:'657CC F6A',drive:'4WD',trans:'5-speed manual',ac:true,km:79000,yard:'Osaka',fob:3450,type:'truck',color:'White',checked:'yesterday',feat:['Air conditioning','Selectable 4WD','High and low range'],notes:'Runs and drives. Seat cover replaced. Light surface rust under the bed. Aftermarket steering wheel.'},
+    {id:20308,set:'12',year:2000,make:'Subaru',model:'Sambar Truck',chassis:'TT1',engine:'658CC EN07F',drive:'2WD',trans:'3-speed automatic',ac:true,km:142000,yard:'Nagoya',fob:2490,type:'truck',color:'White',checked:'today, 6:10 AM',feat:['Automatic transmission','Air conditioning','Power steering'],notes:'High kilometres. Automatic shifts normally. Oil seep at valve cover. Paint dull on roof and hood.'},
+    {id:20384,set:'13',year:1998,make:'Subaru',model:'Sambar Dias Van',chassis:'KV3',engine:'658CC EN07F',drive:'2WD',trans:'5-speed manual',ac:true,km:97000,yard:'Yokohama',fob:3100,type:'van',color:'Teal and silver',checked:'today, 6:10 AM',feat:['Air conditioning','Rear seats','Two-tone paint','Roof rails'],notes:'Original two-tone paint. Runs well. Scratch along left sliding door. Rear wiper not working.'}
+  ];
+
+  function usd(n){ return '$' + Math.round(n).toLocaleString('en-US'); }
+  function miles(t){ return Math.round(t.km * 0.621371 / 1000); }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function cost(t){
+    var freight = COST.freight[t.yard];
+    var rate = COST.duty[t.type];
+    var duty = Math.round(t.fob * rate);
+    var japan = t.fob + freight;
+    var border = duty + COST.customs;
+    var az = COST.trucking + COST.service + COST.title;
+    return { truck:t.fob, freight:freight, rate:rate, duty:duty, customs:COST.customs, trucking:COST.trucking, service:COST.service, title:COST.title,
+             japan:japan, border:border, az:az, total:japan + border + az, extra:freight + border + az };
+  }
+  L.forEach(function(t){ t.c = cost(t); t.mi = miles(t); t.name = t.year + ' ' + t.make + ' ' + t.model; });
+
+  function specLine(t){
+    var p = [t.engine];
+    if (t.drive === '4WD') p.push('4WD');
+    if (t.ac) p.push('A/C');
+    if (/automatic/.test(t.trans)) p.push('A/T');
+    p.push(t.mi + 'K miles', 'JP #' + t.id);
+    return p.join(', ');
+  }
+  function bar(c){
+    return '<div class="bar" aria-hidden="true"><span class="jp" style="flex:' + c.truck + '"></span><span class="fr" style="flex:' + c.freight + '"></span><span class="us" style="flex:' + c.border + '"></span><span class="az" style="flex:' + c.az + '"></span></div>';
+  }
+  function row(label, v){ return '<div class="row"><span>' + label + '</span><i></i><b>' + usd(v) + '</b></div>'; }
+  function ledger(t, opts){
+    var c = t.c, pct = (c.rate * 100).toString().replace(/\.0$/, '');
+    return '<div class="ledger' + (opts.live ? ' is-live' : '') + '">' +
+      '<h2 class="ledger-title">' + opts.title + '</h2>' +
+      '<p class="ledger-sub">' + esc(t.name.toUpperCase()) + ' &middot; JP #' + t.id + '</p>' +
+      '<div class="lg"><div class="lg-h"><span class="sw jp"></span>Paid in Japan</div>' +
+        row('Truck, as listed by the exporter', c.truck) +
+        row('Ocean freight, ' + t.yard + ' to Long Beach', c.freight) + '</div>' +
+      '<div class="lg"><div class="lg-h"><span class="sw us"></span>Paid at the US border</div>' +
+        row('Import duty, ' + pct + '% of the truck', c.duty) +
+        row('Customs filings and port fees', c.customs) + '</div>' +
+      '<div class="lg"><div class="lg-h"><span class="sw az"></span>Paid in Arizona</div>' +
+        row('Trucking, Long Beach to Mesa', c.trucking) +
+        row('Our import fee', c.service) +
+        row('Arizona title paperwork', c.title) + '</div>' +
+      '<div class="total"><span>Landed in Mesa</span><b' + (opts.live ? ' id="hero-total"' : '') + '>' + usd(c.total) + '</b></div>' +
+      bar(c) +
+      (opts.foot ? '<div class="ledger-foot">' + opts.foot + '</div>' : '') +
+    '</div>';
+  }
+
+  /* ---------- browse ---------- */
+  var $ = function(id){ return document.getElementById(id); };
+  var grid = $('grid'), countEl = $('result-count'), pager = $('pager');
+
+  function state(){
+    return { make:$('f-make').value, type:$('f-type').value, max:+$('f-max').value || 0, fwd:$('f-4wd').checked, ac:$('f-ac').checked, mt:$('f-mt').checked,
+             sort:$('f-sort').value, mode:$('f-mode-japan').checked ? 'japan' : 'landed' };
+  }
+  function card(t, mode){
+    var c = t.c, price, label, split;
+    if (mode === 'japan'){ price = usd(c.truck); label = 'In Japan'; split = '+ ' + usd(c.extra) + ' to land it in Mesa'; }
+    else { price = usd(c.total); label = 'Landed in Mesa'; split = 'Truck ' + usd(c.truck) + ' + ' + usd(c.extra) + ' to get it here'; }
+    return '<li class="card"><a href="#truck-' + t.id + '">' +
+      '<div class="ph"><img src="img/t' + t.set + '_1.jpg" alt="' + esc(t.name) + ', ' + esc(t.color.toLowerCase()) + '" loading="lazy" width="800" height="600"><span class="tag">In Japan</span></div>' +
+      '<p class="spec">' + esc(specLine(t)) + '</p>' +
+      '<h3 class="name">' + esc(t.name) + '</h3>' +
+      '<p class="price"><b>' + price + '</b><span>' + label + '</span></p>' +
+      bar(c) +
+      '<p class="split">' + split + '</p>' +
+    '</a></li>';
+  }
+  function renderGrid(){
+    var s = state();
+    var list = L.filter(function(t){
+      return (!s.make || t.make === s.make) && (!s.type || t.type === s.type) && (!s.max || t.c.total < s.max) &&
+             (!s.fwd || t.drive === '4WD') && (!s.ac || t.ac) && (!s.mt || /manual/.test(t.trans));
+    });
+    list.sort(function(a, b){ return s.sort === 'miles' ? a.km - b.km : s.sort === 'year' ? (b.year - a.year || a.c.total - b.c.total) : a.c.total - b.c.total; });
+    var filtered = s.make || s.type || s.max || s.fwd || s.ac || s.mt;
+    if (!list.length){
+      grid.innerHTML = '<li class="empty"><h3>No trucks match those filters</h3><p>Loosen a filter, or tell us what you want and we will find it in Japan.</p>' +
+        '<button type="button" class="btn" id="clear">Clear filters</button><a class="btn ghost" href="#browse" data-inert>Import by Request</a></li>';
+    } else {
+      grid.innerHTML = list.map(function(t){ return card(t, s.mode); }).join('');
+    }
+    countEl.textContent = filtered ? (list.length + (list.length === 1 ? ' truck matches' : ' trucks match')) : '412 trucks in Japan today';
+    pager.hidden = !!filtered;
+  }
+  $('filters').addEventListener('change', renderGrid);
+  $('filters').addEventListener('submit', function(e){ e.preventDefault(); });
+  grid.addEventListener('click', function(e){
+    if (e.target.id === 'clear'){ $('filters').reset(); renderGrid(); }
+  });
+
+  /* ---------- hero ledger ---------- */
+  var hero = L[0];
+  $('hero-ledger').innerHTML = ledger(hero, { live:true, title:'What a ' + usd(hero.fob) + ' truck costs in Mesa',
+    foot:'<span>Example from today&rsquo;s listings</span><a href="#truck-' + hero.id + '">See this truck</a>' });
+  (function countUp(){
+    var el = $('hero-total');
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var from = hero.c.truck, to = hero.c.total, t0 = null, dur = 1400;
+    function tick(ts){
+      if (t0 === null) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = usd(from + (to - from) * e);
+      if (k < 1) requestAnimationFrame(tick);
+    }
+    el.textContent = usd(from);
+    requestAnimationFrame(tick);
+  })();
+
+  /* ---------- truck page ---------- */
+  var vBrowse = $('view-browse'), vTruck = $('view-truck');
+  function deposit(total){ return total < 10000 ? 1000 : total < 20000 ? 2000 : 3000; }
+  function truckPage(t){
+    var c = t.c, dep = deposit(c.total), kmS = t.km.toLocaleString('en-US'), miS = Math.round(t.km * 0.621371 / 100) * 100;
+    var thumbs = [1,2,3,4].map(function(n){
+      return '<button type="button" data-img="img/t' + t.set + '_' + n + '.jpg" aria-pressed="' + (n === 1) + '" aria-label="Photo ' + n + ' of 4"><img src="img/t' + t.set + '_' + n + '.jpg" alt="" loading="lazy"></button>';
+    }).join('');
+    return '<div class="wrap">' +
+      '<p class="crumbs"><a href="#browse">Inventory</a> / <a href="#browse">In Japan</a> / ' + esc(t.name) + '</p>' +
+      '<div class="truck">' +
+        '<div class="truck-grid">' +
+          '<div class="gallery"><div class="ph"><img id="main-photo" src="img/t' + t.set + '_1.jpg" alt="' + esc(t.name) + ', ' + esc(t.color.toLowerCase()) + '" width="800" height="600"><span class="tag">In Japan</span></div><div class="thumbs">' + thumbs + '</div></div>' +
+          '<div>' +
+            '<h1>' + esc(t.name) + '</h1>' +
+            '<p class="landed"><b>' + usd(c.total) + '</b><span>Landed in Mesa, AZ</span></p>' +
+            '<p class="specline">' + esc(specLine(t)) + '</p>' +
+            '<p class="source">Listed by an exporter in ' + t.yard + ' &middot; Listing checked ' + t.checked + '</p>' +
+            ledger(t, { title:'Where the ' + usd(c.total) + ' goes', foot:'<span>Estimate. Your invoice uses the freight and duty actually charged.</span>' }) +
+            '<div class="box">' +
+              '<h2 class="strong">This vehicle is in Japan and sold as-is.</h2>' +
+              '<p>We have not inspected it. Our rust and drivetrain guarantee does not apply. Estimated arrival in Mesa is 60 to 90 days after you reserve.</p>' +
+              '<h2 class="gap">Deposit required</h2>' +
+              '<p>' + usd(dep) + ' to reserve this vehicle. Refunded in full if the exporter has already sold it.</p>' +
+              '<div class="actions"><button type="button" class="btn" data-intent="reserve">Reserve with ' + usd(dep) + ' deposit</button><button type="button" class="btn ghost" data-intent="ask">Ask about this truck</button></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="detail-grid">' +
+          '<div class="detail-tab">Description</div>' +
+          '<div class="detail-body">' +
+            '<h2>From the exporter <span class="unverified">Not verified by us</span></h2>' +
+            '<p class="quote">' + esc(t.notes) + '</p>' +
+            '<dl class="specs">' +
+              '<dt>Miles</dt><dd>' + kmS + 'KM / ' + miS.toLocaleString('en-US') + 'MI</dd>' +
+              '<dt>Engine</dt><dd>' + esc(t.engine) + '</dd>' +
+              '<dt>Trans</dt><dd>' + esc(t.trans.replace(/^./, function(m){ return m.toUpperCase(); })) + '</dd>' +
+              '<dt>Drive</dt><dd>' + t.drive + '</dd>' +
+              '<dt>Chassis</dt><dd>' + t.chassis + '</dd>' +
+              '<dt>Colour</dt><dd>' + esc(t.color) + '</dd>' +
+              '<dt>Yard</dt><dd>' + t.yard + ', Japan</dd>' +
+            '</dl>' +
+            '<div><h2>Features</h2><ul>' + t.feat.map(function(f){ return '<li>' + esc(f) + '</li>'; }).join('') + '</ul></div>' +
+            '<p>This truck is at least 25 years old and legal to import. It has not been serviced, detailed or checked by Arizona Kei Trucks. If you want a truck we have inspected and stand behind, look at what is on the lot or start an Import by Request.</p>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ask" id="ask">' +
+          '<div><h2 id="ask-h">Ask about this truck</h2><p>You will hear from one of the owners, usually within one business day.</p><p class="contact">info@azkeitrucks.com<br>(602) 327-1434</p></div>' +
+          '<form class="form" id="ask-form" novalidate>' +
+            '<div class="full intent" role="radiogroup" aria-label="What do you want to do">' +
+              '<label class="radio"><input type="radio" name="intent" id="intent-ask" value="ask" checked> Ask a question</label>' +
+              '<label class="radio"><input type="radio" name="intent" id="intent-reserve" value="reserve"> Reserve it with a ' + usd(dep) + ' deposit</label>' +
+            '</div>' +
+            '<label>Name<input type="text" id="ask-name" autocomplete="name" required></label>' +
+            '<label>Phone<input type="tel" id="ask-phone" autocomplete="tel"></label>' +
+            '<label class="full">Email<input type="email" id="ask-email" autocomplete="email" required></label>' +
+            '<label class="full">Message<textarea id="ask-msg">I am interested in the ' + esc(t.name) + ' (JP #' + t.id + ').</textarea></label>' +
+            '<p class="form-note full" id="ask-err" role="alert" hidden></p>' +
+            '<div class="full"><button type="submit" class="btn" id="ask-send">Send question</button></div>' +
+          '</form>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  vTruck.addEventListener('click', function(e){
+    var th = e.target.closest('.thumbs button');
+    if (th){
+      $('main-photo').src = th.getAttribute('data-img');
+      [].forEach.call(vTruck.querySelectorAll('.thumbs button'), function(b){ b.setAttribute('aria-pressed', b === th); });
+      return;
+    }
+    var act = e.target.closest('[data-intent]');
+    if (act){
+      setIntent(act.getAttribute('data-intent'));
+      $('ask').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start' });
+      $('ask-name').focus({ preventScroll:true });
+    }
+  });
+  function setIntent(v){
+    var r = $(v === 'reserve' ? 'intent-reserve' : 'intent-ask');
+    if (r){ r.checked = true; syncIntent(); }
+  }
+  function syncIntent(){
+    var reserve = $('intent-reserve') && $('intent-reserve').checked;
+    $('ask-send').textContent = reserve ? 'Send reservation request' : 'Send question';
+    $('ask-h').textContent = reserve ? 'Reserve this truck' : 'Ask about this truck';
+  }
+  vTruck.addEventListener('change', function(e){ if (e.target.name === 'intent') syncIntent(); });
+  vTruck.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = $('ask-name').value.trim(), email = $('ask-email').value.trim(), err = $('ask-err');
+    if (!name || !/^\S+@\S+\.\S+$/.test(email)){
+      err.textContent = !name ? 'Add your name so we know who to reply to.' : 'That email address looks incomplete. Check it and send again.';
+      err.hidden = false; (!name ? $('ask-name') : $('ask-email')).focus(); return;
+    }
+    var reserve = $('intent-reserve').checked;
+    $('ask-form').outerHTML = '<div class="sent" role="status"><strong>' + (reserve ? 'Reservation request sent' : 'Question sent') + '</strong>' +
+      (reserve ? 'We will confirm the truck is still for sale, then email you a deposit link.' : 'We will reply to ' + esc(email) + ', usually within one business day.') +
+      '<br><span class="form-note">This is a mockup. Nothing was actually sent.</span></div>';
+  });
+
+  /* ---------- routing: #browse (default) or #truck-<id> ---------- */
+  function route(){
+    var m = /^#truck-(\d+)$/.exec(location.hash), t = m && L.filter(function(x){ return x.id === +m[1]; })[0];
+    if (t){ vTruck.innerHTML = truckPage(t); vBrowse.hidden = true; vTruck.hidden = false; }
+    else { vTruck.hidden = true; vBrowse.hidden = false; }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+
+  /* Links to pages that exist on the live site but not in this mockup stay put. */
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[data-inert]');
+    if (a) e.preventDefault();
+  });
+  $('news').addEventListener('submit', function(e){ e.preventDefault(); });
+
+  renderGrid();
+  if (/^#truck-/.test(location.hash)) route();
+})();
+</script>
